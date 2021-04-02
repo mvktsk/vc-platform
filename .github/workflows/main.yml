@@ -24,7 +24,6 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-
   build-package:
     name: Build Package
     outputs:
@@ -70,4 +69,4 @@ jobs:
       run: |
         REPOSITORY=$(echo $GITHUB_REPOSITORY | tr '[A-Z]' '[a-z]') 
         docker push "docker.pkg.github.com/$REPOSITORY/platform:${{ steps.image.outputs.taggedVersion }}"
-  
+ 
