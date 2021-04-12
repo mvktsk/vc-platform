@@ -22,8 +22,8 @@ jobs:
     #     gitUserName: mvktsk        
     - name: Cherry-pick
       run: |
-          git config --global user.name 'vc-ci'
-          git config user.email --global  'ci@virtocommerce.com'
+          git config --global user.name 'Maksim'
+          git config user.email --global 'mko@virtoway.com'
           echo "-remote update"
           git remote update
           echo "-fetch --all"
