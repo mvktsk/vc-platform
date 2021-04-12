@@ -33,6 +33,6 @@ jobs:
           echo "-cherry-pick"
           git cherry-pick "${GITHUB_SHA}"
           echo "-push"
-          git push -u origin "regression"
+          git push -u origin "cherry-pick-123"
           echo "-Create PR"
-          hub pull-request -b "regression" -h "regression" -a "vc-ci" -m "PR-123-regression-cherry-pick" -m "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
+          hub pull-request -b "regression" -h "cherry-pick-123" -a "vc-ci" -m "PR-123-regression-cherry-pick" -m "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
