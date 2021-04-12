@@ -5,10 +5,11 @@ on: [push]
 jobs:
   cherry-pick:
     env: 
-      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
       GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-      BLOB_SAS: ${{ secrets.BLOB_TOKEN }}
-      VERSION_SUFFIX: ""
+      PR_BRANCH: "cherry-pick-123"
+      INPUT_TARGETBRANCH: "feature/regression"
+      PR_TITLE: "PR-123-regression-cherry-pick"
+      PR_BODY: "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
     runs-on: ubuntu-latest
     steps:
 
@@ -25,17 +26,15 @@ jobs:
     
     - name: Cherry-pick
       run: |
-          git config --global user.name 'Maksim'
-          git config user.email --global 'mko@virtoway.com'
           echo "-remote update"
           git remote update
           echo "-fetch --all"
           git fetch --all
           echo "-check-out"
-          git checkout -b "cherry-pick-123" "origin/regression"
+          git checkout -b "${PR_BRANCH}" "origin/${INPUT_TARGETBRANCH}"
           echo "-cherry-pick"
           git cherry-pick "${GITHUB_SHA}"
           echo "-push"
-          git push -u origin "cherry-pick-123"
+          git push -u origin "${PR_BRANCH}"
           echo "-Create PR"
-          hub pull-request -b "regression" -h "cherry-pick-123" -a "vc-ci" -m "PR-123-regression-cherry-pick" -m "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
+          hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}"-a "vc-ci" -m "${PR_TITLE}" -m "${PR_BODY}"
