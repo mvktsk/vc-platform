@@ -4,14 +4,29 @@ on: [push]
 
 jobs:
   cherry-pick:
+    env: 
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+      BLOB_SAS: ${{ secrets.BLOB_TOKEN }}
+      VERSION_SUFFIX: ""
     runs-on: ubuntu-latest
     steps:
 
     - name: checkout
       uses: actions/checkout@v1
 
-    - uses: mvktsk/github-action-cherry-pick/cherry-pick/@master
-      with:
-        pullNumber: 123
-        pullUrl: https://github.com/mvktsk/vc-platform/pull/1
-        gitUserName: mvktsk        
+    # - uses: mvktsk/github-action-cherry-pick/cherry-pick/@master
+    #   with:
+    #     pullNumber: 123
+    #     pullUrl: https://github.com/mvktsk/vc-platform/pull/1
+    #     gitUserName: mvktsk        
+    - name: Cherry-pick
+      run: |
+          git config --global user.name 'vc-ci'
+          git config user.email --global  'ci@virtocommerce.com'
+          git remote update
+          git fetch --all
+          git checkout -b "cherry-pick-123" "origin/regression"
+          git cherry-pick "${GITHUB_SHA}"
+          git push -u origin "regression"
+          hub pull-request -b "regression" -h "regression" -a "vc-ci" -m "PR-123-regression-cherry-pick" -m "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
