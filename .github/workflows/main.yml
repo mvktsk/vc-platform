@@ -6,7 +6,7 @@ jobs:
   cherry-pick:
     env: 
       GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-      PR_BRANCH: "cherry-pick-123"
+      PR_BRANCH: "feature/cherry-pick-123"
       INPUT_TARGETBRANCH: "feature/regression"
       PR_TITLE: "PR-123-regression-cherry-pick"
       PR_BODY: "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
