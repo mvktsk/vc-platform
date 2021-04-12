@@ -1,72 +1,17 @@
-name: CI
+name: Cherry-pick
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
-on:
-  workflow_dispatch:
-  push:
-    paths-ignore:
-      - '.github/**'
-      - 'docs/**'
-      - 'build/**'
-      - 'README.md'
-      - 'LICENSE'
-    branches: [ master, dev ]
-  pull_request:
-    paths-ignore:
-      - '.github/**'
-      - 'docs/**'
-      - 'build/**'
-      - 'README.md'
-      - 'LICENSE'
-    branches: [ master, dev ]
+on: [push]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
-  build-package:
-    name: Build Package
-    outputs:
-        taggedVersion: ${{ steps.image.outputs.taggedVersion }}
-    # The type of runner that the job will run on
+  cherry-pick:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
 
-    - name: Get Image Version
-      uses: VirtoCommerce/vc-github-actions/get-image-version@dev
-      id: image
+    - name: checkout
+      uses: actions/checkout@v1
 
-    - name: Install VirtoCommerce.GlobalTool
-      run: |
-        dotnet tool install --global VirtoCommerce.GlobalTool
-        mv Directory.Build.Props Directory.Build.props
-    - name: Build Package
-      run: vc-build Compress -skip Test
-
-    - name: Build Docker Image
-      shell: pwsh
-      run: |
-        Invoke-WebRequest -Uri https://raw.githubusercontent.com/VirtoCommerce/vc-docker/master/linux/platform/Dockerfile -OutFile artifacts/Dockerfile
-        Invoke-WebRequest -Uri https://github.com/VirtoCommerce/vc-docker/blob/master/linux/platform/wait-for-it.sh -OutFile artifacts/wait-for-it.sh
-        docker build artifacts --build-arg SOURCE=. --tag "docker.pkg.github.com/$('${{ github.repository }}'.ToLower())/platform:${{ steps.image.outputs.taggedVersion }}"
-    - name: Docker Login
-      uses: azure/docker-login@v1
+    - uses: mvktsk/github-action-cherry-pick/cherry-pick/@master
       with:
-        login-server: docker.pkg.github.com
-        username: $GITHUB_ACTOR
-        password: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        # Artifact name
-        name: Platform # optional
-        # A file, directory or wildcard pattern that describes what to upload
-        path: artifacts/publish/  
-
-    - name: Push Docker Image to GitHub
-      run: |
-        REPOSITORY=$(echo $GITHUB_REPOSITORY | tr '[A-Z]' '[a-z]') 
-        docker push "docker.pkg.github.com/$REPOSITORY/platform:${{ steps.image.outputs.taggedVersion }}"
- 
+        pullNumber: 123
+        pullUrl: https://github.com/mvktsk/vc-platform/pull/1
+        gitUserName: mvktsk        
