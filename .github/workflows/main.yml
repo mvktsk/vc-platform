@@ -20,6 +20,9 @@ jobs:
     #     pullNumber: 123
     #     pullUrl: https://github.com/mvktsk/vc-platform/pull/1
     #     gitUserName: mvktsk        
+
+    - uses: VirtoCommerce/vc-github-actions/setup-git-credentials-github@master
+    
     - name: Cherry-pick
       run: |
           git config --global user.name 'Maksim'
