@@ -24,9 +24,15 @@ jobs:
       run: |
           git config --global user.name 'vc-ci'
           git config user.email --global  'ci@virtocommerce.com'
+          echo "-remote update"
           git remote update
+          echo "-fetch --all"
           git fetch --all
+          echo "-check-out"
           git checkout -b "cherry-pick-123" "origin/regression"
+          echo "-cherry-pick"
           git cherry-pick "${GITHUB_SHA}"
+          echo "-push"
           git push -u origin "regression"
+          echo "-Create PR"
           hub pull-request -b "regression" -h "regression" -a "vc-ci" -m "PR-123-regression-cherry-pick" -m "Automated cherry-pick update from PR 123 https://github.com/mvktsk/vc-platform/pull/1"
