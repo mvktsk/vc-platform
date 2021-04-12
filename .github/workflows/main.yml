@@ -40,4 +40,4 @@ jobs:
           echo "-push"
           git push -u origin "${PR_BRANCH}"
           echo "-Create PR"
-          hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}" -a "vc-ci" -m "${PR_TITLE}" -m "${PR_BODY}"
+          hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}" -m "${PR_TITLE}" -m "${PR_BODY}"
