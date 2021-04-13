@@ -31,6 +31,7 @@ jobs:
     needs: check-label
     if: ${{ needs.check-label.outputs.isLabeled == 'true'}}
     env: 
+      GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       PR_BRANCH: ""
       INPUT_TARGETBRANCH: "feature/regression"
       PR_TITLE: ""
