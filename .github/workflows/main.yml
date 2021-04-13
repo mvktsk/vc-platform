@@ -7,11 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       # isLabeled: ${{ steps.checkLabel.outputs.isLabeled }}
-      # pullNumber: ${{ steps.checkLabel.outputs.pullNumber }}
-      # pullUrl: ${{ steps.checkLabel.outputs.pullUrl }}
+      pullNumber: ${{ steps.checkLabel.outputs.pullNumber }}
+      pullUrl: ${{ steps.checkLabel.outputs.pullUrl }}
       isLabeled: 'true'
-      pullNumber: '123'
-      pullUrl: 'https://github.com/mvktsk/vc-platform/pull/1'
 
     steps:
     - name: Check regression label
