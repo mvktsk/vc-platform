@@ -22,12 +22,10 @@ jobs:
         label: regression
         commitMessage: ${{ github.event.head_commit.message }}
 
-
   cherry-pick:
     needs: check-label
     if: ${{ needs.check-label.outputs.isLabeled == 'true'}}
     env: 
-      GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
       PR_BRANCH: ""
       INPUT_TARGETBRANCH: "feature/regression"
       PR_TITLE: ""
@@ -35,7 +33,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Set PR_BRANCH PR_TITLE PR_BODY
-      if: ${{ steps.checkLabel.outputs.isLabeled == 'true' }}
       run: |
         echo "PR_BRANCH=feature/cherry-pick-${{ needs.check-label.outputs.pullNumber }}" >> $GITHUB_ENV
         echo "PR_TITLE=PR-${{ needs.check-label.outputs.pullNumber }}-regression-cherry-pick" >> $GITHUB_ENV
