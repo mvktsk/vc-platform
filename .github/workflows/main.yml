@@ -34,14 +34,6 @@ jobs:
         echo "PR_BRANCH=feature/cherry-pick-${{ needs.check-label.outputs.pullNumber }}" >> $GITHUB_ENV
         echo "PR_TITLE=PR-${{ needs.check-label.outputs.pullNumber }}-regression-cherry-pick" >> $GITHUB_ENV
         echo "PR_BODY=Automated cherry-pick update from PR ${{ needs.check-label.outputs.pullNumber }} ${{ needs.check-label.outputs.pullUrl}}" >> $GITHUB_ENV
-     
-    - name: Check PR_BRANCH PR_TITLE PR_BODY
-      run: |
-        echo "INPUT_TARGETBRANCH: ${{env.INPUT_TARGETBRANCH}}"
-        echo "PR_BRANCH: ${{ env.PR_BRANCH }}" 
-        echo "PR_TITLE: ${{ env.PR_TITLE }}"
-        echo "PR_BODY: ${{ env.PR_BODY }}"
-
 
     - name: checkout
       uses: actions/checkout@v1
@@ -50,18 +42,24 @@ jobs:
       with:
         githubToken: ${{ secrets.REPO_TOKEN }}
 
-    
     - name: Cherry-pick
       run: |
+          git_cmd() {
+            if [[ "${DRY_RUN:-false}" == "true" ]]; then
+              echo $@
+            else
+              eval $@
+            fi
+          }
           echo "-remote update"
-          git remote update
+          git_cmd git remote update
           echo "-fetch --all"
-          git fetch --all
+          git_cmd git fetch --all
           echo "-check-out"
-          git checkout -b "${PR_BRANCH}" "origin/${INPUT_TARGETBRANCH}"
+          git_cmd git checkout -b "${PR_BRANCH}" "origin/${INPUT_TARGETBRANCH}"
           echo "-cherry-pick"
-          git cherry-pick "${GITHUB_SHA}"
+          git_cmd git cherry-pick "${GITHUB_SHA}"
           echo "-push"
-          git push -u origin "${PR_BRANCH}"
+          git_cmd git push -u origin "${PR_BRANCH}"
           echo "-Create PR"
-          hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}" -m "${PR_TITLE}" -m "${PR_BODY}"
+          git_cmd hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}" -m "${PR_TITLE}" -m "${PR_BODY}"
