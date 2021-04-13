@@ -1,6 +1,14 @@
 name: Cherry-pick
 
-on: [push]
+on: 
+  push:
+    paths-ignore:
+      - '.github/**'
+      - 'docs/**'
+      - 'build/**'
+      - 'README.md'
+      - 'LICENSE'
+    branches: [ master, dev ]
 
 jobs:
   check-label:
