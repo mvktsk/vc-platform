@@ -6,10 +6,9 @@ jobs:
   check-label:
     runs-on: ubuntu-latest
     outputs:
-      # isLabeled: ${{ steps.checkLabel.outputs.isLabeled }}
+      isLabeled: ${{ steps.checkLabel.outputs.isLabeled }}
       pullNumber: ${{ steps.checkLabel.outputs.pullNumber }}
       pullUrl: ${{ steps.checkLabel.outputs.pullUrl }}
-      isLabeled: 'true'
 
     steps:
     - name: Check regression label
