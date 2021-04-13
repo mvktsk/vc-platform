@@ -18,6 +18,7 @@ jobs:
       id: checkLabel
       uses: VirtoCommerce/vc-github-actions/check-pr-regression-label@PT-802
       with:
+        githubToken: ${{ secrets.REPO_TOKEN }}
         label: regression
         commitMessage: ${{ github.event.head_commit.message }}
 
