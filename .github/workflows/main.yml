@@ -52,22 +52,15 @@ jobs:
 
     - name: Cherry-pick
       run: |
-          git_cmd() {
-            if [[ "${DRY_RUN:-false}" == "true" ]]; then
-              echo $@
-            else
-              eval $@
-            fi
-          }
           echo "-remote update"
-          git_cmd git remote update
+          git remote update
           echo "-fetch --all"
-          git_cmd git fetch --all
+          git fetch --all
           echo "-check-out"
-          git_cmd git checkout -b "${PR_BRANCH}" "origin/${INPUT_TARGETBRANCH}"
+          git checkout -b "${PR_BRANCH}" "origin/${INPUT_TARGETBRANCH}"
           echo "-cherry-pick"
-          git_cmd git cherry-pick "${GITHUB_SHA}"
+          git cherry-pick "${GITHUB_SHA}"
           echo "-push"
-          git_cmd git push -u origin "${PR_BRANCH}"
+          git push -u origin "${PR_BRANCH}"
           echo "-Create PR"
-          git_cmd hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}" -m "${PR_TITLE}" -m "${PR_BODY}"
+          hub pull-request -b "${INPUT_TARGETBRANCH}" -h "${PR_BRANCH}" -m "${PR_TITLE}" -m "${PR_BODY}"
