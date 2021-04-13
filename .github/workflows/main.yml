@@ -38,9 +38,9 @@ jobs:
         echo "PR_TITLE=PR-${{ needs.check-label.outputs.pullNumber }}-regression-cherry-pick" >> $GITHUB_ENV
         echo "PR_BODY=Automated cherry-pick update from PR ${{ needs.check-label.outputs.pullNumber }} ${{ needs.check-label.outputs.pullUrl}}" >> $GITHUB_ENV
         echo "INPUT_TARGETBRANCH: ${{env.INPUT_TARGETBRANCH}}"
-        echo "PR_BRANCH: ${env.PR_BRANCH}" 
-        echo "PR_TITLE: ${env.PR_TITLE}"
-        echo "PR_BODY: ${env.PR_BODY}"
+        echo "PR_BRANCH: ${{ env.PR_BRANCH }}" 
+        echo "PR_TITLE: ${{ env.PR_TITLE }}"
+        echo "PR_BODY: ${{ env.PR_BODY }}"
 
     # - name: checkout
     #   uses: actions/checkout@v1
