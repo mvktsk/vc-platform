@@ -54,7 +54,7 @@ jobs:
 
     - name: Check INPUT_TARGETBRANCH exists
       run: |
-          existed_in_remote=$(git ls-remote --heads origin "${INPUT_TARGETBRANCH})"
+          existed_in_remote=$(git ls-remote --heads origin "${INPUT_TARGETBRANCH}")
           if [[ -z ${existed_in_remote} ]]; then
             echo "TARGETBRANCH_EXISTS=${{ true }}" >> $GITHUB_ENV
           else
