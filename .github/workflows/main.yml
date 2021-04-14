@@ -56,9 +56,9 @@ jobs:
       run: |
           existed_in_remote=$(git ls-remote --heads origin "${INPUT_TARGETBRANCH}")
           if [[ -z ${existed_in_remote} ]]; then
-            echo "TARGETBRANCH_EXISTS=${{ true }}" >> $GITHUB_ENV
-          else
             echo "TARGETBRANCH_EXISTS=${{ false }}" >> $GITHUB_ENV
+          else
+            echo "TARGETBRANCH_EXISTS=${{ true }}" >> $GITHUB_ENV
           fi
 
     - name: Test TARGETBRANCH_EXISTS
