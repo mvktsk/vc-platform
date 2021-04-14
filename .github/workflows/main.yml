@@ -32,7 +32,7 @@ jobs:
     if: ${{ needs.check-label.outputs.isLabeled == 'true'}}
     env: 
       GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-      INPUT_TARGETBRANCH: "feature/regression"
+      INPUT_TARGETBRANCH: "feature/reg"
       PR_BRANCH: ""
       PR_TITLE: ""
       PR_BODY: ""
