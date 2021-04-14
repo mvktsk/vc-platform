@@ -32,10 +32,11 @@ jobs:
     if: ${{ needs.check-label.outputs.isLabeled == 'true'}}
     env: 
       GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-      PR_BRANCH: ""
       INPUT_TARGETBRANCH: "feature/regression"
+      PR_BRANCH: ""
       PR_TITLE: ""
       PR_BODY: ""
+      TARGETBRANCH_EXISTS: ${{ false }}
     runs-on: ubuntu-latest
     steps:
     - name: Set PR_BRANCH PR_TITLE PR_BODY
@@ -51,13 +52,27 @@ jobs:
       with:
         githubToken: ${{ secrets.REPO_TOKEN }}
 
+    - name: Check INPUT_TARGETBRANCH exists
+      run: |
+          existed_in_remote=$(git ls-remote --heads origin ${branch})
+          if [[ -z ${existed_in_remote} ]]; then
+            echo "TARGETBRANCH_EXISTS=${{ false }}" >> $GITHUB_ENV
+          else
+            echo "TARGETBRANCH_EXISTS=${{ true }}" >> $GITHUB_ENV
+          fi
+
+    - name: Test TARGETBRANCH_EXISTS
+      run: |
+          echo ${TARGETBRANCH_EXISTS}
+
     - name: Cherry-pick
+      if: ${TARGETBRANCH_EXISTS}
       run: |
           echo "-remote update"
           git remote update
           echo "-fetch --all"
           git fetch --all
-          echo "-check-out"
+          echo "-checkout"
           git checkout -b "${PR_BRANCH}" "origin/${INPUT_TARGETBRANCH}"
           echo "-cherry-pick"
           git cherry-pick "${GITHUB_SHA}"
