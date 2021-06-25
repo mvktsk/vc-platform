@@ -35,4 +35,5 @@ jobs:
       - name: Set version up
         uses: VirtoCommerce/vc-github-actions/set-version-up@VDS-2030
         with:
+          githubToken: ${{ secrets.REPO_TOKEN }}
           versionLabel: "minor"
