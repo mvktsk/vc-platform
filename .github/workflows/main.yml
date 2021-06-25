@@ -29,6 +29,11 @@ jobs:
         with: 
           fetch-depth: 0
 
+      - name: Setup Git Credentials
+        uses: VirtoCommerce/vc-github-actions/setup-git-credentials-github@master
+        with: 
+          githubToken: ${{ secrets.REPO_TOKEN }}
+
       - name: Set version up
         uses: VirtoCommerce/vc-github-actions/set-version-up@VDS-2030
         with:
