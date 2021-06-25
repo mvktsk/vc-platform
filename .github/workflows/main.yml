@@ -1,17 +1,35 @@
-name: Cherry-pick
+# This is a basic workflow to help you get started with Actions
 
-on: [push]
+name: Test_TBD
 
+# Controls when the workflow will run
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  cherry-pick:
+  # This workflow contains a single job called "build"
+  update_version:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Set up .net Core 3.1.x for vc-build #GitHib Actions migrates to .net Core 5.x. To vc-build work properly need to manually install .net Core 3.1.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
 
-    - name: checkout
-      uses: actions/checkout@v1
+      - name: Install VirtoCommerce.GlobalTool
+        uses: VirtoCommerce/vc-github-actions/setup-vcbuild@master
 
-    - uses: mvktsk/github-action-cherry-pick/cherry-pick/@master
-      with:
-        pullNumber: 123
-        pullUrl: https://github.com/mvktsk/vc-platform/pull/1
-        gitUserName: mvktsk        
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with: 
+          fetch-depth: 0
+
+      - name: Set version up
+        uses: VirtoCommerce/vc-github-actions/set-version-up@VDS-2030
+        with:
+          versionLabel: "minor"
