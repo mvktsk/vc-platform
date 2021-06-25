@@ -29,6 +29,8 @@ jobs:
         with: 
           fetch-depth: 0
 
+      - run: ls -l
+      
       - name: Setup Git Credentials
         uses: VirtoCommerce/vc-github-actions/setup-git-credentials-github@master
         with: 
